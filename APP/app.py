@@ -1,6 +1,6 @@
 import streamlit as st
-import matplotlib.pyplot as plt
 import pandas as pd
+import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the dataset
@@ -42,18 +42,23 @@ if option == 'Data Overview':
 
 elif option == 'Data Visualization':
     st.subheader("Data Visualization")
+    st.write("This scatter plot shows the relationship between Size and Rent.")
     # Scatter plot of Rent vs Size
-    fig, ax = plt.subplots()
-    sns.scatterplot(data=data, x='Size', y='Rent', ax=ax)
-    st.pyplot(fig)
-
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=data, x='Size', y='Rent')
+    st.pyplot()
 
 elif option == 'Filtering':
     st.subheader("Filtering")
+    st.write("You can filter the data based on the number of bathrooms using the slider below.")
     # Slider for filtering by number of bathrooms
     bathroom_filter = st.slider('Select number of bathrooms:', min_value=1, max_value=5, value=1)
     filtered_data = data[data['Bathroom'] == bathroom_filter]
     st.write(filtered_data)
+
+# Add other options with descriptions for visualizations as needed
+
+
 
 elif option == 'Statistics':
     st.subheader("Statistics")
