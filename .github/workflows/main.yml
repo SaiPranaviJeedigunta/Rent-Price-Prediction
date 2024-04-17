@@ -1,0 +1,14 @@
+name: Streamlit
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install streamlit
+      - name: Run Streamlit app
+        run: streamlit run app.py
