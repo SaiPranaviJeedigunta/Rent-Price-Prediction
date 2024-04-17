@@ -4,20 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the dataset
-data = pd.DataFrame({
-    "Posted On": ["2022-05-18", "2022-05-13", "2022-05-16", "2022-07-04", "2022-05-09"],
-    "BHK": [2, 2, 2, 2, 2],
-    "Rent": [10000, 20000, 17000, 10000, 7500],
-    "Size": [1100, 800, 1000, 800, 850],
-    "Floor": ["Ground out of 2", "1 out of 3", "1 out of 3", "1 out of 2", "1 out of 2"],
-    "Area Type": ["Super Area", "Super Area", "Super Area", "Super Area", "Carpet Area"],
-    "Area Locality": ["Bandel", "Phool Bagan, Kankurgachi", "Salt Lake City Sector 2", "Dumdum Park", "South Dum Dum"],
-    "City": ["Kolkata", "Kolkata", "Kolkata", "Kolkata", "Kolkata"],
-    "Furnishing Status": ["Unfurnished", "Semi-Furnished", "Semi-Furnished", "Unfurnished", "Unfurnished"],
-    "Tenant Preferred": ["Bachelors/Family", "Bachelors/Family", "Bachelors/Family", "Bachelors/Family", "Bachelors"],
-    "Bathroom": [2, 1, 1, 1, 1],
-    "Point of Contact": ["Contact Owner", "Contact Owner", "Contact Owner", "Contact Owner", "Contact Owner"]
-})
+data_path = "https://github.com/SaiPranaviJeedigunta/capstone/blob/main/data/House_Rent_Dataset.csv"
+data = pd.read_csv(data_path)
 
 # Sidebar title
 st.sidebar.title("House Rent Dataset Explorer")
@@ -55,10 +43,6 @@ elif option == 'Filtering':
     bathroom_filter = st.slider('Select number of bathrooms:', min_value=1, max_value=5, value=1)
     filtered_data = data[data['Bathroom'] == bathroom_filter]
     st.write(filtered_data)
-
-# Add other options with descriptions for visualizations as needed
-
-
 
 elif option == 'Statistics':
     st.subheader("Statistics")
@@ -128,3 +112,4 @@ elif option == 'Data Export':
     st.write("Exporting data to CSV file...")
     data.to_csv('rent_data_export.csv', index=False)
     st.write("Data exported successfully.")
+
