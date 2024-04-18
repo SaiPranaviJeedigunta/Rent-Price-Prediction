@@ -6,6 +6,9 @@ import requests
 import plotly.express as px
 from io import StringIO
 
+[deprecation]
+showPyplotGlobalUse = false
+
 # Load the dataset
 data_url = "https://github.com/SaiPranaviJeedigunta/capstone/raw/main/data/House_Rent_Dataset.csv"
 response = requests.get(data_url)
@@ -109,8 +112,12 @@ elif option == 'Map Visualization':
 
 elif option == 'Price Distribution':
     st.subheader("Price Distribution")
-    plt.hist(data['Rent'])
-    st.pyplot()
+    fig, ax = plt.subplots()
+    ax.hist(data['Rent'])
+    st.pyplot(fig)
+
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
 
 elif option == 'Property Type Analysis':
     st.subheader("Property Type Analysis")
