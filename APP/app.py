@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import requests
+import plotly.express as px
 from io import StringIO
 
 # Load the dataset
@@ -33,19 +34,26 @@ if option == 'Data Overview':
 
 elif option == 'Data Visualization':
     st.subheader("Data Visualization")
-    # Scatter plot of Rent vs Size
     st.write("This scatter plot shows the relationship between Size and Rent.")
-    fig, ax = plt.subplots()
-    sns.scatterplot(data=data, x='Size', y='Rent', ax=ax)
-    st.pyplot(fig)
+    # Scatter plot of Rent vs Size using Plotly
+    fig = px.scatter(data, x='Size', y='Rent', title='Rent vs Size')
+    st.plotly_chart(fig)
 
-    # Pairplot for multiple variable comparison
-    st.write("Pairplot for multiple variable comparison.")
-    fig, ax = plt.subplots()
-    sns.pairplot(data=data[['BHK', 'Size', 'Rent', 'Bathroom']])
-    st.pyplot(fig)
+    st.write("This bar chart shows the count of each Furnishing Status.")
+    # Bar chart of Furnishing Status using Seaborn
+    plt.figure(figsize=(10, 6))
+    sns.countplot(x='Furnishing Status', data=data)
+    plt.xlabel('Furnishing Status')
+    plt.ylabel('Count')
+    plt.title('Furnishing Status Count')
+    st.pyplot()
 
-# Add other option implementations here...
+    st.write("This line plot shows the trend of Rent over time.")
+    # Line plot of Rent over time using Plotly
+    data['Posted On'] = pd.to_datetime(data['Posted On'])
+    fig = px.line(data, x='Posted On', y='Rent', title='Rent Over Time')
+    st.plotly_chart(fig)
+
 
 elif option == 'Data Export':
     st.subheader("Data Export")
