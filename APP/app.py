@@ -26,7 +26,7 @@ option = st.sidebar.selectbox(
 st.title("Rent Insights Hub")
 
 # Data Overview
-elif option == 'Data Overview':
+if option == 'Data Overview':
     st.subheader("Data Overview")
     
     # Display data types
