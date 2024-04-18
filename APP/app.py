@@ -116,9 +116,6 @@ elif option == 'Price Distribution':
     ax.hist(data['Rent'])
     st.pyplot(fig)
 
-st.set_option('deprecation.showPyplotGlobalUse', False)
-
-
 elif option == 'Property Type Analysis':
     st.sub
     st.subheader("Property Type Analysis")
