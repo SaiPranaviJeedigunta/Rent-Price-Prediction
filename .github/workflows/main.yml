@@ -8,13 +8,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
-      - name: Install Python
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
@@ -22,4 +24,5 @@ jobs:
           pip install -r requirements/requirements.txt
 
       - name: Run Streamlit app
-        run: streamlit run APP/app.py
+        run: |
+          streamlit run APP/app.py
