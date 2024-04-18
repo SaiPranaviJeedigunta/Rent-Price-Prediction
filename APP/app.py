@@ -32,12 +32,16 @@ if option == 'Data Overview':
     st.write("Data Types:", data.dtypes)
     st.write("First 5 Rows:", data.head())
 
+# Data Visualization
 elif option == 'Data Visualization':
     st.subheader("Data Visualization")
     st.write("This scatter plot shows the relationship between Size and Rent.")
-    # Scatter plot of Rent vs Size using Plotly
-    fig = px.scatter(data, x='Size', y='Rent', title='Rent vs Size')
-    st.plotly_chart(fig)
+    # Create a figure and axis object
+    fig, ax = plt.subplots(figsize=(10, 6))
+    # Scatter plot of Rent vs Size
+    sns.scatterplot(data=data, x='Size', y='Rent', ax=ax)
+    # Display the plot
+    st.pyplot(fig)
 
     st.write("This bar chart shows the count of each Furnishing Status.")
     # Bar chart of Furnishing Status using Seaborn
