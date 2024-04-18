@@ -2,10 +2,13 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import requests
+from io import StringIO
 
 # Load the dataset
-data_path = "https://github.com/SaiPranaviJeedigunta/capstone/blob/main/data/House_Rent_Dataset.csv"
-data = pd.read_csv(data_path)
+data_url = "https://github.com/SaiPranaviJeedigunta/capstone/raw/main/data/House_Rent_Dataset.csv"
+response = requests.get(data_url)
+data = pd.read_csv(StringIO(response.text))
 
 # Sidebar title
 st.sidebar.title("House Rent Dataset Explorer")
@@ -35,6 +38,16 @@ elif option == 'Data Visualization':
     plt.figure(figsize=(10, 6))
     sns.scatterplot(data=data, x='Size', y='Rent')
     st.pyplot()
+
+# Add other option implementations here...
+
+elif option == 'Data Export':
+    st.subheader("Data Export")
+    # Export the data to a CSV file
+    st.write("Exporting data to CSV file...")
+    data.to_csv('rent_data_export.csv', index=False)
+    st.write("Data exported successfully.")
+
 
 elif option == 'Filtering':
     st.subheader("Filtering")
