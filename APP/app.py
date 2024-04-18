@@ -6,9 +6,6 @@ import requests
 import plotly.express as px
 from io import StringIO
 
-[deprecation]
-showPyplotGlobalUse = false
-
 # Load the dataset
 data_url = "https://github.com/SaiPranaviJeedigunta/capstone/raw/main/data/House_Rent_Dataset.csv"
 response = requests.get(data_url)
@@ -117,7 +114,6 @@ elif option == 'Price Distribution':
     st.pyplot(fig)
 
 elif option == 'Property Type Analysis':
-    st.sub
     st.subheader("Property Type Analysis")
     property_type_counts = data['Area Type'].value_counts()
     st.write(property_type_counts)
@@ -171,4 +167,3 @@ elif option == 'Data Export':
     st.write("Exporting data to CSV file...")
     data.to_csv('rent_data_export.csv', index=False)
     st.write("Data exported successfully.")
-
