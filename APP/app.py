@@ -44,7 +44,6 @@ elif option == 'Data Overview':
     with st.expander("View First 5 Rows"):
         st.write(data.head())
 
-
 # Data Visualization
 elif option == 'Data Visualization':
     st.subheader("Data Visualization")
