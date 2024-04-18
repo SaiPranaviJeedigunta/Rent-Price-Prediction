@@ -120,6 +120,7 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 
 
 elif option == 'Property Type Analysis':
+    st.sub
     st.subheader("Property Type Analysis")
     property_type_counts = data['Area Type'].value_counts()
     st.write(property_type_counts)
