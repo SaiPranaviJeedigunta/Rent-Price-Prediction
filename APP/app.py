@@ -11,7 +11,7 @@ response = requests.get(data_url)
 data = pd.read_csv(StringIO(response.text))
 
 # Sidebar title
-st.sidebar.title("House Rent Dataset Explorer")
+st.sidebar.title("Rent Insights Hub")
 
 # Sidebar options
 option = st.sidebar.selectbox(
@@ -22,7 +22,7 @@ option = st.sidebar.selectbox(
 )
 
 # Main content title
-st.title("House Rent Dataset Explorer")
+st.title("Rent Insights Hub")
 
 # Display selected option
 if option == 'Data Overview':
@@ -33,10 +33,16 @@ if option == 'Data Overview':
 
 elif option == 'Data Visualization':
     st.subheader("Data Visualization")
-    st.write("This scatter plot shows the relationship between Size and Rent.")
     # Scatter plot of Rent vs Size
-    fig, ax = plt.subplots(figsize=(10, 6))
+    st.write("This scatter plot shows the relationship between Size and Rent.")
+    fig, ax = plt.subplots()
     sns.scatterplot(data=data, x='Size', y='Rent', ax=ax)
+    st.pyplot(fig)
+
+    # Pairplot for multiple variable comparison
+    st.write("Pairplot for multiple variable comparison.")
+    fig, ax = plt.subplots()
+    sns.pairplot(data=data[['BHK', 'Size', 'Rent', 'Bathroom']])
     st.pyplot(fig)
 
 # Add other option implementations here...
