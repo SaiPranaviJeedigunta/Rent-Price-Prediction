@@ -51,11 +51,30 @@ elif option == 'Data Export':
 
 elif option == 'Filtering':
     st.subheader("Filtering")
-    st.write("You can filter the data based on the number of bathrooms using the slider below.")
+    st.write("You can filter the data based on the number of bathrooms and BHK using the sliders below.")
     # Slider for filtering by number of bathrooms
     bathroom_filter = st.slider('Select number of bathrooms:', min_value=1, max_value=5, value=1)
-    filtered_data = data[data['Bathroom'] == bathroom_filter]
+    # Slider for filtering by BHK
+    bhk_filter = st.slider('Select number of BHK:', min_value=1, max_value=5, value=1)
+    filtered_data = data[(data['Bathroom'] == bathroom_filter) & (data['BHK'] == bhk_filter)]
     st.write(filtered_data)
+
+    st.write("You can filter the data based on the Furnishing Status and Tenant Preferred using the multi-select dropdowns below.")
+    # Multi-select dropdown for filtering by Furnishing Status
+    furnishing_status_filter = st.multiselect('Select Furnishing Status:', data['Furnishing Status'].unique())
+    # Multi-select dropdown for filtering by Tenant Preferred
+    tenant_preferred_filter = st.multiselect('Select Tenant Preferred:', data['Tenant Preferred'].unique())
+    filtered_data = data[(data['Furnishing Status'].isin(furnishing_status_filter)) & (data['Tenant Preferred'].isin(tenant_preferred_filter))]
+    st.write(filtered_data)
+
+    st.write("You can filter the data based on the Area Type and City using the multiselect dropdowns below.")
+    # Multi-select dropdown for filtering by Area Type
+    area_type_filter = st.multiselect('Select Area Type:', data['Area Type'].unique())
+    # Multi-select dropdown for filtering by City
+    city_filter = st.multiselect('Select City:', data['City'].unique())
+    filtered_data = data[(data['Area Type'].isin(area_type_filter)) & (data['City'].isin(city_filter))]
+    st.write(filtered_data)
+
 
 elif option == 'Statistics':
     st.subheader("Statistics")
