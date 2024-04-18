@@ -24,5 +24,8 @@ jobs:
         run: |
           pip freeze
 
+      - name: Change to app directory
+        run: cd APP
+
       - name: Run Streamlit app
         run: streamlit run app.py
