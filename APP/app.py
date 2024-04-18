@@ -17,7 +17,7 @@ st.sidebar.title("Rent Insights Hub")
 # Sidebar options
 option = st.sidebar.selectbox(
     'Select an option:',
-    ('Data Overview', 'Data Visualization', 'Filtering', 'Statistics', 'Map Visualization',
+    ('Data Overview', 'Data Visualization', 'Filtering', 'Map Visualization',
      'Price Distribution', 'Property Type Analysis', 'Location-based Analysis', 'Time Series Analysis',
      'Price Prediction', 'Comparative Analysis', 'Heatmap Visualization', 'Data Export')
 )
