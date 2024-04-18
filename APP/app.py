@@ -29,10 +29,6 @@ st.title("Rent Insights Hub")
 if option == 'Data Overview':
     st.subheader("Data Overview")
     
-    # Display data types
-    st.write("Data Types:")
-    st.write(data.dtypes)
-
     # Display summary statistics
     st.write("Summary Statistics:")
     st.write(data.describe())
