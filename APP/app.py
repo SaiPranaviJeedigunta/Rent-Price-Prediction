@@ -49,19 +49,22 @@ elif option == 'Data Visualization':
     st.pyplot(fig)
 
     st.write("This bar chart shows the count of each Furnishing Status.")
+    # Create a figure and axis object
+    fig, ax = plt.subplots(figsize=(10, 6))
     # Bar chart of Furnishing Status using Seaborn
-    plt.figure(figsize=(10, 6))
-    sns.countplot(x='Furnishing Status', data=data)
+    sns.countplot(x='Furnishing Status', data=data, ax=ax)
     plt.xlabel('Furnishing Status')
     plt.ylabel('Count')
     plt.title('Furnishing Status Count')
-    st.pyplot()
+    # Display the plot
+    st.pyplot(fig)
 
     st.write("This line plot shows the trend of Rent over time.")
     # Line plot of Rent over time using Plotly
     data['Posted On'] = pd.to_datetime(data['Posted On'])
     fig = px.line(data, x='Posted On', y='Rent', title='Rent Over Time')
     st.plotly_chart(fig)
+
 
 
 elif option == 'Data Export':
@@ -98,10 +101,6 @@ elif option == 'Filtering':
     filtered_data = data[(data['Area Type'].isin(area_type_filter)) & (data['City'].isin(city_filter))]
     st.write(filtered_data)
 
-
-elif option == 'Statistics':
-    st.subheader("Statistics")
-    st.write(data.describe())
 
 elif option == 'Map Visualization':
     st.subheader("Map Visualization")
