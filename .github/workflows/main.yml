@@ -1,14 +1,15 @@
 name: Streamlit
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Install Python
         uses: actions/setup-python@v2
@@ -18,14 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install streamlit
-
-      - name: List installed packages
-        run: |
-          pip freeze
-
-      - name: Change to app directory
-        run: cd APP
+          pip install -r requirements.txt
 
       - name: Run Streamlit app
-        run: streamlit run app.py
+        run: streamlit run APP/app.py
