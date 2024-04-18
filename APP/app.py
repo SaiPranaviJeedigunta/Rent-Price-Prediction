@@ -26,19 +26,19 @@ option = st.sidebar.selectbox(
 st.title("Rent Insights Hub")
 
 # Data Overview
-if option == 'Data Overview':
+elif option == 'Data Overview':
     st.subheader("Data Overview")
     
     # Display number of rows and columns in a styled format
     col1, col2 = st.columns(2)
     with col1:
-        st.write(f"Number of Rows: **{data.shape[0]}**")
+        st.markdown(f"Number of Rows: **{data.shape[0]}**")
     with col2:
-        st.write(f"Number of Columns: **{data.shape[1]}**")
+        st.markdown(f"Number of Columns: **{data.shape[1]}**")
     
     # Display data types in a formatted table
     st.write("Data Types:")
-    st.dataframe(data.dtypes.reset_index().rename(columns={0: 'Data Type', 'index': 'Column'}), index=False)
+    st.dataframe(data.dtypes.reset_index().rename(columns={0: 'Data Type', 'index': 'Column'}))
 
     # Display the first 5 rows in an expandable section
     with st.expander("View First 5 Rows"):
