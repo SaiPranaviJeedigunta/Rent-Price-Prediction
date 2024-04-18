@@ -25,8 +25,8 @@ option = st.sidebar.selectbox(
 # Main content title
 st.title("Rent Insights Hub")
 
-# Data Overview
-elif option == 'Data Overview':
+# Display selected option
+if option == 'Data Overview':
     st.subheader("Data Overview")
     
     # Display number of rows and columns in a styled format
