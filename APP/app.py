@@ -35,9 +35,9 @@ elif option == 'Data Visualization':
     st.subheader("Data Visualization")
     st.write("This scatter plot shows the relationship between Size and Rent.")
     # Scatter plot of Rent vs Size
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=data, x='Size', y='Rent')
-    st.pyplot()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.scatterplot(data=data, x='Size', y='Rent', ax=ax)
+    st.pyplot(fig)
 
 # Add other option implementations here...
 
