@@ -8,12 +8,8 @@ from io import StringIO, BytesIO
 from urllib.error import URLError
 
 # Set a custom color scheme
-custom_theme = {
-    "primaryColor": "#005599",
-    "secondaryBackgroundColor": "#ff9900",
-    "textColor": "#333333",
-    "font": "sans-serif"
-}
+wellerman_palette = ['#393e46', '#00adb5', '#eeeeee', '#ffd369', '#f8b500']
+st.set_page_config(page_title="Rent Insights Hub", page_icon="🏠", layout="wide", initial_sidebar_state="expanded")
 
 # Load the dataset
 data_url = "https://github.com/SaiPranaviJeedigunta/capstone/raw/main/data/House_Rent_Dataset.csv"
@@ -33,36 +29,17 @@ except requests.exceptions.RequestException as err:
 except pd.errors.ParserError as perr:
     st.error(f"Parser Error: {perr}")
 else:
-    # Set the custom theme
-    st.set_page_config(layout="wide")
-    st.markdown(f"""
-    <style>
-        .reportview-container .main .block-container {{
-            max-width: 1200px;
-            padding-top: 2rem;
-            padding-right: 2rem;
-            padding-left: 2rem;
-            padding-bottom: 2rem;
-        }}
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Sidebar title
-    st.sidebar.title("Rent Insights Hub")
-
     # Sidebar options
     option = st.sidebar.selectbox(
         'Select an option:',
-        ('Data Overview', 'Data Visualization', 'Filtering', 'Price Distribution',
-         'Property Type Analysis', 'Location-based Analysis', 'Time Series Analysis',
-         'Price Prediction', 'Comparative Analysis', 'Heatmap Visualization', 'Data Export')
+        ('Data Overview', 'Data Visualization', 'Filtering', 'Analysis', 'Data Export')
     )
-   # Main content title
+
+    # Main content title
     st.title("Rent Insights Hub")
 
     # Data Overview
     if option == 'Data Overview':
-        st.subheader("Data Overview")
         st.write("Welcome to the Rent Insights Hub! Here, you can find various insights and visualizations related to rent prices.")
 
         st.write("Summary Statistics:")
@@ -70,6 +47,8 @@ else:
 
         with st.expander("View First 5 Rows"):
             st.write(data.head())
+
+        st.sidebar.markdown("This tab provides an overview of the property details dataset, including summary statistics and the option to view the first 5 rows of data.")
 
     # Data Visualization
     elif option == 'Data Visualization':
@@ -92,6 +71,8 @@ else:
         fig = px.line(data, x='Posted On', y='Rent', title='Rent Over Time')
         st.plotly_chart(fig)
 
+        st.sidebar.markdown("This tab provides visualizations of the property details dataset, including scatter plots, bar charts, and line plots to visualize various aspects of the data.")
+
     # Filtering
     elif option == 'Filtering':
         st.subheader("Filtering")
@@ -113,70 +94,40 @@ else:
         filtered_data = data[(data['Area Type'].isin(area_type_filter)) & (data['City'].isin(city_filter))]
         st.write(filtered_data)
 
-    # Price Distribution
-    elif option == 'Price Distribution':
-        st.subheader("Price Distribution")
-        st.write("This box plot shows the distribution of Rent prices.")
-        fig, ax = plt.subplots(figsize=(8, 6))
-        sns.boxplot(y='Rent', data=data, ax=ax)
-        st.pyplot(fig)
+        st.sidebar.markdown("This tab allows you to filter the property details dataset based on various criteria, including bathrooms, BHK, Furnishing Status, Tenant Preferred, Area Type, and City.")
 
-    # Property Type Analysis
-    elif option == 'Property Type Analysis':
-        st.subheader("Property Type Analysis")
+    # Analysis
+    elif option == 'Analysis':
+        st.subheader("Analysis")
+        st.write("Property Type Analysis:")
         property_type_counts = data['Area Type'].value_counts()
         st.write(property_type_counts)
 
-    # Location-based Analysis
-    elif option == 'Location-based Analysis':
-        st.subheader("Location-based Analysis")
+        st.write("Location-based Analysis:")
         location_counts = data['Area Locality'].value_counts()
         st.write(location_counts)
 
-        # Time Series Analysis
-    elif option == 'Time Series Analysis':
-        st.subheader("Time Series Analysis")
+        st.write("Price Distribution and Time Series Analysis:")
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+        sns.boxplot(y='Rent', data=data, ax=ax1, palette=wellerman_palette)
+        ax1.set_title('Price Distribution')
         data['Posted On'] = pd.to_datetime(data['Posted On'])
-        fig, ax = plt.subplots(figsize=(12, 6))
         for area_type in data['Area Type'].unique():
             subset = data[data['Area Type'] == area_type]
-            sns.lineplot(x='Posted On', y='Rent', data=subset, label=area_type)
-        plt.xlabel('Date')
-        plt.ylabel('Rent')
-        plt.title('Rent Over Time by Area Type')
-        plt.legend(title='Area Type', loc='upper left', bbox_to_anchor=(1, 1))
+            sns.lineplot(x='Posted On', y='Rent', data=subset, label=area_type, ax=ax2)
+        ax2.set_title('Rent Over Time by Area Type')
+        ax2.legend(title='Area Type', loc='upper left', bbox_to_anchor=(1, 1))
         st.pyplot(fig)
 
-    # Price Prediction
-    elif option == 'Price Prediction':
-        st.subheader("Price Prediction")
-        st.write("Price prediction functionality goes here.")
-
-    # Comparative Analysis
-    elif option == 'Comparative Analysis':
-        st.subheader("Comparative Analysis")
+        st.write("Comparative Analysis:")
         fig, ax = plt.subplots(figsize=(8, 6))
-        sns.boxplot(x='Furnishing Status', y='Rent', data=data, ax=ax)
-        plt.xlabel('Furnishing Status')
-        plt.ylabel('Rent')
-        plt.title('Rent by Furnishing Status')
+        sns.boxplot(x='Furnishing Status', y='Rent', data=data, ax=ax, palette=wellerman_palette)
+        ax.set_xlabel('Furnishing Status')
+        ax.set_ylabel('Rent')
+        ax.set_title('Rent by Furnishing Status')
         st.pyplot(fig)
 
-    # Heatmap Visualization
-    elif option == 'Heatmap Visualization':
-        st.subheader("Heatmap Visualization")
-        st.write("This heatmap shows the correlation matrix of the dataset.")
-    
-        # Handle missing values
-        data_cleaned = data.dropna()
-        if len(data_cleaned) > 0:
-            # Compute the correlation matrix
-            corr_matrix = data_cleaned.corr()
-            fig, ax = plt.subplots(figsize=(10, 8))
-            sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
-            st.pyplot(fig)
-        else:
-            st.warning("No data available after removing missing values. Please check your data.")
+        st.sidebar.markdown("This tab provides analysis of the property details dataset, including property type analysis, location-based analysis, price distribution, time series analysis, and comparative analysis.")
 
     # Data Export
     elif option == 'Data Export':
@@ -185,4 +136,5 @@ else:
         data.to_csv('rent_data_export.csv', index=False)
         st.write("Data exported successfully.")
 
-   
+        st.sidebar.markdown("This tab allows you to export the property details dataset to a CSV file.")
+
