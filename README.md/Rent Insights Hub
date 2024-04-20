@@ -1,7 +1,8 @@
-# **Overview**
+# Rent Insights Hub
 
+## Overview
 The Rent Insights Hub app is a machine learning-powered tool that allows users to explore insights and visualizations related to rent prices, and predict rent prices based on selected features.
-**Features**
+### Features
 Data Overview: Provides summary statistics and allows users to view the first 5 rows of the dataset.
 Data Visualization: Offers various visualizations such as scatter plots, bar charts, and line plots to visualize different aspects of the dataset.
 Filtering: Allows users to filter the dataset based on criteria such as the number of bathrooms, BHK, furnishing status, tenant preferred, area type, and city.
