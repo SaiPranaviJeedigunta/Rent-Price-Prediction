@@ -3,9 +3,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import requests
+import ssl
 import plotly.express as px
-from io import StringIO, BytesIO
-from urllib.error import URLError
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import mean_squared_error, r2_score
+from io import BytesIO
+import certifi
+
+# Set the SSL certificate verification context
+ssl_ctx = ssl.create_default_context(cafile=certifi.where())
 
 # Set a custom color scheme
 wellerman_palette = ['#393e46', '#00adb5', '#eeeeee', '#ffd369', '#f8b500']
@@ -15,7 +23,7 @@ st.set_page_config(page_title="Rent Insights Hub", page_icon="🏠", layout="wid
 data_url = "https://github.com/SaiPranaviJeedigunta/capstone/raw/main/data/House_Rent_Dataset.csv"
 
 try:
-    response = requests.get(data_url)
+    response = requests.get(data_url, verify=False)
     response.raise_for_status()  # Raise an exception for HTTP errors (e.g., 404, 500)
     data = pd.read_csv(BytesIO(response.content))
 except requests.exceptions.HTTPError as errh:
@@ -32,7 +40,7 @@ else:
     # Sidebar options
     option = st.sidebar.selectbox(
         'Select an option:',
-        ('Data Overview', 'Data Visualization', 'Filtering', 'Analysis', 'Data Export')
+        ('Data Overview', 'Data Visualization', 'Filtering', 'Analysis', 'Price Prediction', 'Data Export')
     )
 
     # Main content title
@@ -129,6 +137,54 @@ else:
 
         st.sidebar.markdown("This tab provides analysis of the property details dataset, including property type analysis, location-based analysis, price distribution, time series analysis, and comparative analysis.")
 
+    # Price Prediction
+    elif option == 'Price Prediction':
+        st.subheader("Price Prediction")
+        
+        # Select a city
+        city = st.selectbox('Select a city:', data['City'].unique())
+
+        # Filter data for the selected city
+        city_data = data[data['City'] == city]
+
+        # Select a feature for prediction
+        prediction_option = st.selectbox('Choose an option', city_data.drop(['Rent', 'City'], axis=1).columns)
+
+        if prediction_option:
+            selected_values = st.multiselect(f'Select value(s) for {prediction_option}', city_data[prediction_option].unique())
+            
+            if selected_values:
+                selected_row = city_data[city_data[prediction_option].isin(selected_values)]
+                
+                # Prepare data for prediction
+                X = selected_row.drop('Rent', axis=1)
+                y = selected_row['Rent']
+
+                # Encode categorical variables
+                le = LabelEncoder()
+                for col in X.select_dtypes(include='object'):
+                    X[col] = le.fit_transform(X[col])
+
+                # Split the data into training and testing sets
+                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+                # Train the model
+                model = LinearRegression()
+                model.fit(X_train, y_train)
+
+                # Make predictions
+                y_pred = model.predict(X_test)
+
+                # Display prediction result
+                st.write(f"Based on {prediction_option} being '{', '.join(map(str, selected_values))}', the predicted rent price is approximately: ₹{y_pred[0]:.2f}")
+
+                st.write("Please note that this is an estimate and actual prices may vary.")
+            else:
+                st.info("Please select value(s) for prediction.")
+        else:
+            st.info("Please select an option for prediction.")
+
+        st.sidebar.markdown("This tab allows you to predict rent prices based on selected features such as city, area locality, etc. The model used for prediction is a Linear Regression model.")
     # Data Export
     elif option == 'Data Export':
         st.subheader("Data Export")
@@ -137,4 +193,3 @@ else:
         st.write("Data exported successfully.")
 
         st.sidebar.markdown("This tab allows you to export the property details dataset to a CSV file.")
-
