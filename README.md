@@ -26,7 +26,7 @@ streamlit run app.py
 ```
 
 # Dataset
-The app was developed as a machine learning exercise from the public dataset [House Rent Prediction Dataset](https://www.kaggle.com/datasets/iamsouravbanerjee/house-rent-prediction-dataset). It contains information about rental properties including features such as size, number of bathrooms, BHK, furnishing status, tenant preferred, area type, city, rent, and posted date.
+The app was developed as a machine learning exercise from the public dataset [House Rent Prediction Dataset](https://www.kaggle.com/datasets/iamsouravbanerjee/house-rent-prediction-dataset). This dataset contains information about rental properties including features such as size, number of bathrooms, BHK, furnishing status, tenant preferred, area type, city, rent, and posted date.
 
 # Libraries Used
 Streamlit: For building the web application interface. \
