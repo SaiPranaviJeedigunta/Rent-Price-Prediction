@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 import requests
 import ssl
 import plotly.express as px
@@ -18,6 +19,8 @@ from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import NearestNeighbors
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import GridSearchCV
+from scipy.stats import randint
 from io import BytesIO
 import certifi
 
@@ -27,7 +30,6 @@ ssl_ctx = ssl.create_default_context(cafile=certifi.where())
 
 # Set a custom color scheme
 st.set_page_config(page_title="Rent Insights Hub", page_icon="🏠", layout="wide", initial_sidebar_state="expanded")
-
 
 # Load the dataset
 data_url = "https://github.com/SaiPranaviJeedigunta/capstone/raw/main/data/House_Rent_Dataset.csv"
@@ -47,16 +49,37 @@ except requests.exceptions.RequestException as err:
 except pd.errors.ParserError as perr:
     st.error(f"Parser Error: {perr}")
 else:
-     # Train a Random Forest Regressor model for property valuation
+    
+ # Assuming data is your DataFrame containing the relevant columns
     X = data[['Size', 'BHK', 'Bathroom']]
     y = data['Rent']
-    model = RandomForestRegressor(random_state=42)
-    model.fit(X, y)
 
-     # Get feature importances
+    param_grid = {
+        'n_estimators': [100, 200],
+        'max_depth': [None, 10],
+        'min_samples_split': [2, 10],
+        'min_samples_leaf': [1, 5]
+    }
+
+    grid_search = GridSearchCV(
+        estimator=RandomForestRegressor(random_state=42),
+        param_grid=param_grid,
+        cv=3,
+        n_jobs=-1,
+        verbose=2
+    )
+
+    grid_search.fit(X, y)
+
+    best_params = grid_search.best_params_
+    best_score = grid_search.best_score_
+
+    model = grid_search.best_estimator_
+
+# Get feature importances
     feature_importances = model.feature_importances_
 
-    # Create a DataFrame to store feature importances
+# Create a DataFrame to store feature importances
     importance_df = pd.DataFrame({'Feature': X.columns, 'Importance': feature_importances})
     importance_df = importance_df.sort_values(by='Importance', ascending=False)
     
@@ -162,25 +185,26 @@ else:
 
 # Sidebar descriptions
     sidebar_descriptions = {
-    "Data Overview": "View summary statistics and the first 5 rows of the dataset.",
+    "Data Overview": "Explore a summary of the dataset and visualizations to understand key insights at a glance.",
     "Data Visualization": "Explore visualizations of the dataset.",
     "Filtering": "Filter the dataset based on various criteria.",
-    "Analysis": "Perform analysis on the dataset.",
-    "Price Prediction": "Predict the rental price of a property.",
-    "Rent Affordability Calculator": "Calculate the affordability of rent based on monthly income.",
-    "Demand Prediction": "Predict the demand for rental properties.",
-    "Property Valuation Tool": "Estimate the value of a property.",
-    "Predict Rent Trend": "Forecast the future trend of rental prices.",
-    "Analyze Tenant Preferences": "Analyze tenant preferences using clustering.",
-    "Detect Rent Outliers": "Detect outliers in rental prices.",
-    "Segment Rental Market": "Segment the rental market based on property features.",
-    "Recommend Properties": "Get recommendations for rental properties based on preferences."
+    "Analysis": "Gain deeper insights into the rental market with detailed analysis.",
+    "Price Prediction": "Predict the rental price of properties based on specific criteria, helping you make informed decisions about renting or leasing.",
+    "Rent Affordability Calculator": "Determine rental options that fit within your budget based on your monthly income, helping you find affordable rental properties.",
+    "Demand Prediction": "Predict the demand for rental properties in different area types to understand market trends and make informed decisions.",
+    "Property Valuation Tool": "Estimate the rental value of a property based on its features to make informed decisions about pricing and investment.",
+    "Predict Rent Trend": "Forecast the future trend of rental prices based on historical data to anticipate market changes.",
+    "Analyze Tenant Preferences": "Gain insights into tenant preferences using clustering analysis to understand popular rental property features.",
+    "Detect Rent Outliers": "Identify rental properties with unusual rental prices compared to the average, helping you make informed decisions.",
+    "Segment Rental Market": "Explore how the rental market is segmented based on property size and number of bedrooms, providing insights into different rental property categories.",
+    "Recommend Properties": "Get personalized recommendations for rental properties based on your preferences, helping you find the perfect rental property that matches your criteria.",
 }
 
 # Display description based on selected option
     if option:
       st.sidebar.write(sidebar_descriptions[option])
-
+    else:
+      st.sidebar.write("No description available for this option.")
   
     # Main content title
     st.title("Rent Insights Hub")
@@ -308,6 +332,7 @@ else:
       st.subheader("Price Prediction")
       st.write("Predict the rental price of a property in a selected city based on specific criteria. Choose a city and a feature to filter the data, and the model will predict the rent price, helping you make informed decisions about renting or leasing properties.")
 
+       
       city = st.selectbox('Select a city:', data['City'].unique())
       city_data = data[data['City'] == city]
       prediction_option = st.selectbox('Choose an option', city_data.drop(['Rent', 'City'], axis=1).columns)
@@ -328,6 +353,7 @@ else:
             # Use a Seaborn palette for the boxplot
               sns.set_palette("husl")
               st.write(f"Based on {prediction_option} being '{', '.join(map(str, selected_values))}', the predicted rent price is approximately: ₹{y_pred[0]:.2f} per month.")
+
 
 
 # Rent Affordability Calculator
@@ -356,6 +382,10 @@ else:
         avg_demand = predict_demand(data)
         st.write("Average Demand per Area Type:")
         st.write(avg_demand)
+        # Sample code for an interactive plot showing the predicted demand for rental properties
+        demand_data = predict_demand(data)
+        fig = px.bar(demand_data, x='Area Type', y='Average Demand', color='Area Type')
+        st.plotly_chart(fig)
 
     # Property Valuation Tool
     elif option == 'Property Valuation Tool':
@@ -391,6 +421,7 @@ else:
         st.write(forecast)
         st.write("The forecasted rent trends provide an insight into the expected changes in rent prices over the next few months. This information can be valuable for tenants and landlords alike, helping them make informed decisions about renting or leasing properties.")
 
+        
     # Analyze Tenant Preferences
     elif option == 'Analyze Tenant Preferences':
       st.subheader("Analyze Tenant Preferences")
@@ -405,7 +436,7 @@ else:
           1: "Budget-conscious",
           2: "Luxury seekers"
       }
-
+      
     # Map cluster labels to user-friendly labels
       data['Cluster Label'] = cluster_labels
       data['Cluster Label'] = data['Cluster Label'].map(cluster_label_mapping)
@@ -414,21 +445,47 @@ else:
       st.write(data['Cluster Label'].value_counts())
 
       st.write("Sample of Data with Cluster Labels:")
-      st.write(data[['Area Locality', 'Furnishing Status', 'Area Type', 'Size', 'BHK', 'Bathroom', 'Tenant Preferred', 'Cluster Label']].head())
+      st.write(data[['Area Locality', 'Furnishing Status', 'Area Type', 'Size', 'BHK', 'Bathroom', 'Tenant Preferred', 'Cluster Label']].head(50))
 
       #st.sidebar.markdown("This tab analyzes tenant preferences using KMeans clustering, providing user-friendly cluster labels and a sample of data with cluster labels.")
 
 
     # Detect Rent Outliers
     elif option == 'Detect Rent Outliers':
-        st.subheader("Detect Rent Outliers")
-        outliers = detect_rent_outliers(data)
+      st.subheader("Detect Rent Outliers")
+      outliers = detect_rent_outliers(data)
 
-        st.write("Outlier Labels:")
-        st.write("Identify rental properties with prices that significantly deviate from the average.")
-        st.write("Outlier labels indicate whether a rental price is an outlier or not. An outlier is a data point that differs significantly from other observations in the dataset. Here, a label of -1 indicates an outlier, while a label of 1 indicates a normal, non-outlying data point.")
-        st.write("Outlier Labels (-1 for outliers, 1 for inliers):")
-        st.write(outliers)
+      st.write("Outliers are rental properties with prices that significantly deviate from the average. They can provide valuable insights into unusual rental price patterns.")
+      st.write("Outlier Labels (-1 for outliers, 1 for inliers):")
+
+    # Add a description explaining what 1 and -1 mean
+      st.write("In this table, a label of -1 indicates an outlier, while a label of 1 indicates a normal, non-outlying data point.")
+    # Create a DataFrame with index, outlier label, and property details
+      outliers_df = pd.DataFrame({
+          'Index': data.index,
+          'Outlier': outliers
+      })
+
+    # Merge the outliers_df with the original data to get property details
+      outliers_df = outliers_df.merge(data, left_on='Index', right_index=True)
+
+    # Display the table with index, outlier label, and property information
+      st.write(outliers_df.reset_index(drop=True))
+
+# Description above the graph
+      st.write("The histogram below shows the distribution of rental prices. Outliers, which are rental prices significantly different from the average, are highlighted in red. These outliers can provide insights into unusual rental price patterns.")
+      st.write("Outliers are indicated by the red points on the histogram. They represent rental prices that deviate significantly from the average prices in the dataset.")
+      st.write("The histogram helps you visualize the distribution of rental prices and identify any unusual patterns or extreme values.")
+
+    # Visualize the distribution of rental prices with outliers highlighted
+      fig, ax = plt.subplots(figsize=(10, 6))
+      sns.histplot(data['Rent'], bins=30, kde=True, ax=ax)
+      outliers_idx = np.where(outliers == -1)[0]
+      ax.scatter(outliers_idx, np.zeros_like(outliers_idx), color='red', label='Outliers')
+      ax.legend()
+      ax.set_title('Distribution of Rental Prices with Outliers')
+      st.pyplot(fig)
+
 
     # Segment Rental Market
     elif option == 'Segment Rental Market':
@@ -439,10 +496,14 @@ else:
         st.write("Segmented Data with Cluster Labels:")
         st.write(segmented_data)
 
+        
+
+        
     # Recommend Properties
     elif option == 'Recommend Properties':
       st.write("Provide personalized recommendations for rental properties based on user preferences.")
       st.subheader("Recommend Properties")
+     
       user_preferences = [st.number_input("Enter property size:", step=1, value=1),
                           st.number_input("Enter number of bedrooms (BHK):", step=1, value=1),
                           st.number_input("Enter rent budget:", step=1, value=1)]
@@ -450,7 +511,4 @@ else:
       st.write("Using your preferences for property size, number of bedrooms (BHK), and rent budget, we recommend properties that closely match your criteria. These recommendations are based on the nearest neighbors to your preferences in our dataset.")
       st.write("Here are the recommended properties:")
       st.write(recommended_properties)
-
-
-
     
