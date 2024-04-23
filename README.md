@@ -1,7 +1,9 @@
 # **Rent Insights Hub**
 
 ## Overview
-The Rent Insights Hub is a Streamlit web application designed to provide various insights and tools related to rental properties. This application allows users to explore and analyze rental data, visualize trends, predict rental prices, estimate property values.
+The Rent Insights Hub is a Streamlit web application designed to provide various insights and tools related to rental properties. This application allows users to explore and analyze rental data, visualize trends, predict rental prices, and estimate property values.
+
+A live version of the application can be found on [Streamlit Community Cloud](https://rentprediction.streamlit.app/)
 
 ### Features
 
