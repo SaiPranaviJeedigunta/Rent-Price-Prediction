@@ -7,31 +7,31 @@ A live version of the application can be found on [Streamlit Community Cloud](ht
 
 ### Features
 
-**Data Overview:**  Summary statistics and visualization of the dataset. Interactive 3D scatter plot and animated plot. 
+- **Data Overview:**  Summary statistics and visualization of the dataset. Interactive 3D scatter plot and animated plot. 
 
-**Data Visualization:** Visualization of rental data through scatter plots, bar charts, and line plots. 
+- **Data Visualization:** Visualization of rental data through scatter plots, bar charts, and line plots. 
 
-**Filtering:** Filter the dataset based on various criteria such as bathrooms, BHK, furnishing status, area type, and city. 
+- **Filtering:** Filter the dataset based on various criteria such as bathrooms, BHK, furnishing status, area type, and city. 
 
-**Analysis:** Property type analysis, location-based analysis, price distribution, time series analysis, and comparative analysis. 
+- **Analysis:** Property type analysis, location-based analysis, price distribution, time series analysis, and comparative analysis. 
 
-**Price Prediction:** Predict the rental price of a property based on specific criteria such as size, BHK, and bathrooms. 
+- **Price Prediction:** Predict the rental price of a property based on specific criteria such as size, BHK, and bathrooms. 
 
-**Rent Affordability Calculator :** Calculate the affordability of rent based on monthly income and filter available rental properties. 
+- **Rent Affordability Calculator :** Calculate the affordability of rent based on monthly income and filter available rental properties. 
 
-**Demand Prediction :** Predict the demand for rental properties in different area types. 
+- **Demand Prediction :** Predict the demand for rental properties in different area types. 
 
-**Property Valuation Tool :** Estimate the value of a property based on its features. 
+- **Property Valuation Tool :** Estimate the value of a property based on its features. 
 
-**Predict Rent Trend :** Forecast the future trend of rental prices based on historical data. 
+- **Predict Rent Trend :** Forecast the future trend of rental prices based on historical data. 
 
-**Analyze Tenant Preferences :** Analyze tenant preferences using clustering analysis. 
+- **Analyze Tenant Preferences :** Analyze tenant preferences using clustering analysis. 
 
-**Detect Rent Outliers :** Identify rental properties with prices that significantly deviate from the average. 
+- **Detect Rent Outliers :** Identify rental properties with prices that significantly deviate from the average. 
 
-**Segment Rental Market :** Segment the rental market based on property size and number of bedrooms using KMeans clustering. 
+- **Segment Rental Market :** Segment the rental market based on property size and number of bedrooms using KMeans clustering. 
 
-**Recommend Properties :** Provide personalized recommendations for rental properties based on user preferences. 
+- **Recommend Properties :** Provide personalized recommendations for rental properties based on user preferences. 
 
 
 
@@ -56,13 +56,13 @@ The app was developed as a machine learning exercise from the public dataset [Ho
 
 # Libraries Used
 
-Streamlit: A web application framework used for building interactive web applications with Python. \
-Pandas: A powerful data manipulation and analysis library. \
-Matplotlib: A plotting library for creating static, interactive, and animated visualizations in Python. \
-Seaborn: A statistical data visualization library based on Matplotlib, providing a high-level interface for drawing attractive and informative statistical graphics. \
-Plotly: An interactive graphing library that allows for the creation of interactive plots and dashboards. \
-Scikit-learn: A machine learning library providing simple and efficient tools for data mining and data analysis. \
-Requests: A library for making HTTP requests in Python, used for fetching data from URLs. \
-Statsmodels: A library for estimating and interpreting statistical models in Python. \
-Certifi: For SSL certificate verification. 
+- Streamlit: A web application framework used for building interactive web applications with Python. \
+- Pandas: A powerful data manipulation and analysis library. \
+- Matplotlib: A plotting library for creating static, interactive, and animated visualizations in Python. \
+- Seaborn: A statistical data visualization library based on Matplotlib, providing a high-level interface for drawing attractive and informative statistical graphics. \
+- Plotly: An interactive graphing library that allows for the creation of interactive plots and dashboards. \
+- Scikit-learn: A machine learning library providing simple and efficient tools for data mining and data analysis. \
+- Requests: A library for making HTTP requests in Python, used for fetching data from URLs. \
+- Statsmodels: A library for estimating and interpreting statistical models in Python. \
+- Certifi: For SSL certificate verification. 
 
