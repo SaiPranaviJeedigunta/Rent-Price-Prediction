@@ -56,13 +56,13 @@ The app was developed as a machine learning exercise from the public dataset [Ho
 
 # Libraries Used
 
-- Streamlit: A web application framework used for building interactive web applications with Python. \
-- Pandas: A powerful data manipulation and analysis library. \
-- Matplotlib: A plotting library for creating static, interactive, and animated visualizations in Python. \
-- Seaborn: A statistical data visualization library based on Matplotlib, providing a high-level interface for drawing attractive and informative statistical graphics. \
-- Plotly: An interactive graphing library that allows for the creation of interactive plots and dashboards. \
-- Scikit-learn: A machine learning library providing simple and efficient tools for data mining and data analysis. \
-- Requests: A library for making HTTP requests in Python, used for fetching data from URLs. \
-- Statsmodels: A library for estimating and interpreting statistical models in Python. \
+- Streamlit: A web application framework used for building interactive web applications with Python. 
+- Pandas: A powerful data manipulation and analysis library. 
+- Matplotlib: A plotting library for creating static, interactive, and animated visualizations in Python. 
+- Seaborn: A statistical data visualization library based on Matplotlib, providing a high-level interface for drawing attractive and informative statistical graphics. 
+- Plotly: An interactive graphing library that allows for the creation of interactive plots and dashboards. 
+- Scikit-learn: A machine learning library providing simple and efficient tools for data mining and data analysis. 
+- Requests: A library for making HTTP requests in Python, used for fetching data from URLs. 
+- Statsmodels: A library for estimating and interpreting statistical models in Python. 
 - Certifi: For SSL certificate verification. 
 
